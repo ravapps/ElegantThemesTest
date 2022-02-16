@@ -5,8 +5,16 @@
         </h2>
     </x-slot>
 
+@foreach ($contacts as $contact)
+<script>
+@if( $contact->wordpress_id )
+  CheckInMyDB({{$contact->wordpress_id}},{{$contact->id}});
+@endif
+</script>
+@endforeach
+<script>
 
-
+</script>
 <div class="pull-right mb-2">
 
 </div>
@@ -30,7 +38,7 @@
 <td>{{ $contact->id }}</td>
 <td>{{ $contact->name }}</td>
 <td>{{ $contact->email }}</td>
-<td>{{ $contact->address }}</td>
+<td>{{ $contact->phone }}</td>
 <td>
 <form action="{{ route('contacts.destroy',$contact->id) }}" method="Post">
 <a class="btn btn-primary" href="{{ route('contacts.edit',$contact->id) }}">Edit</a>
@@ -38,9 +46,17 @@
 @method('DELETE')
 <button type="submit" class="btn btn-danger">Delete</button>
 </form>
+@if( empty($contact->wordpress_id) )
+<a class="btn btn-primary" href="#" onclick="ajaxMakeUser('{{ $contact->email }}','{{ $contact->email }}','{{ $contact->phone }}',{{ $contact->id }})">Create WordPress Account</a>
+@endif
 </td>
+
 </tr>
+
 @endforeach
 </table>
 {!! $contacts->links() !!}
+
+
+
 </x-app-layout>
